@@ -1,6 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from angle_util import angle_linspace
 
+def check_collision_traj(start_angle: np.ndarray, end_angle: np.ndarray,
+                          steps: int, obstacles: np.array, collision_thr):
+    angle_space = angle_linspace(start_angle=start_angle, end_angle=end_angle,
+                                 n=steps)
+
+    for angle in angle_space:
+
+        curr_state = State(np.array(angle))
+        env_state = ManipulatorEnv(obstacles=obstacles,
+                                 initial_state=curr_state,
+                                 collision_threshold=collision_thr)
+        print(f'Step # collision: ', env_state.check_collision(curr_state))
+        env_state.render()
 
 class State:
 
